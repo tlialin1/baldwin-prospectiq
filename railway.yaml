@@ -11,8 +11,6 @@ services:
     healthcheck:
       path: /health
       port: 3000
-    depends_on:
-      - postgres
 
   enrichment:
     build:
@@ -22,19 +20,6 @@ services:
       - 8000
     env:
       PORT: 8000
-    depends_on:
-      - postgres
-
-  postgres:
-    image: postgres:15-alpine
-    env:
-      POSTGRES_DB: baldwin_prospectiq
-      POSTGRES_USER: baldwin
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - 5432
 
   frontend:
     build:

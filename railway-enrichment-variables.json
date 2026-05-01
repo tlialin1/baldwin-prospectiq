@@ -1,0 +1,10 @@
+{
+  "DATABASE_URL": "${{Postgres.DATABASE_URL}}",
+  "PORT": "8000",
+  "RENTCAST_API_KEY": "your-rentcast-api-key",
+  "PROPMIX_API_KEY": "your-propmix-api-key",
+  "PROPMIX_USERNAME": "your-propmix-username",
+  "PROPMIX_PASSWORD": "your-propmix-password",
+  "BRIGHTDATA_API_KEY": "b25f27d1-c650-4cfa-9ee7-66a11cb8cb0e",
+  "OPENAI_API_KEY": "your-openai-api-key"
+}
