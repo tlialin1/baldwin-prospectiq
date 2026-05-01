@@ -2,6 +2,7 @@ services:
   - type: web
     name: baldwin-backend
     runtime: python
+    plan: free
     buildCommand: ""
     startCommand: python backend/server.py
     envVars:
