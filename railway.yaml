@@ -7,21 +7,3 @@ services:
       - 3000
     env:
       PORT: 3000
-
-  enrichment:
-    build:
-      context: .
-      dockerfile: Dockerfile.enrichment
-    ports:
-      - 8000
-    env:
-      PORT: 8000
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - 8080
-    env:
-      PORT: 8080
