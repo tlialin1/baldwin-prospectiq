@@ -3,78 +3,36 @@ import React from 'react';
 function App() {
   const [tab, setTab] = React.useState(0);
 
-  const styles = {
-    header: {
-      background: '#1976d2',
-      color: 'white',
-      padding: '20px',
-      textAlign: 'center'
-    },
-    nav: {
-      display: 'flex',
-      justifyContent: 'center',
-      background: 'white',
-      borderBottom: '1px solid #ddd',
-      padding: '0'
-    },
-    navButton: {
-      background: 'none',
-      border: 'none',
-      padding: '15px 30px',
-      cursor: 'pointer',
-      fontSize: '16px',
-      borderBottom: '3px solid transparent'
-    },
-    activeNav: {
-      borderBottom: '3px solid #1976d2',
-      color: '#1976d2'
-    },
-    container: {
-      maxWidth: '1200px',
-      margin: '20px auto',
-      padding: '0 20px'
-    },
-    card: {
-      background: 'white',
-      borderRadius: '8px',
-      padding: '20px',
-      marginBottom: '20px',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-    }
-  };
-
-  const tabs = [
-    { id: 0, label: '📤 Upload' },
-    { id: 1, label: '📊 Dashboard' },
-    { id: 2, label: '📈 Analytics' },
-    { id: 3, label: '🏆 Promotion' }
-  ];
-
   return (
     <div>
-      <div style={styles.header}>
+      <div style={{background: '#1976d2', color: 'white', padding: '20px', textAlign: 'center'}}>
         <h1>🎯 Baldwin Dashboard (React)</h1>
         <p>Post-Sale Performance & Retention Platform</p>
       </div>
 
-      <div style={styles.nav}>
-        {tabs.map(t => (
+      <div style={{display: 'flex', justifyContent: 'center', background: 'white', borderBottom: '1px solid #ddd'}}>
+        {['📤 Upload', '📊 Dashboard', '📈 Analytics', '🏆 Promotion'].map((label, idx) => (
           <button
-            key={t.id}
+            key={idx}
             style={{
-              ...styles.navButton,
-              ...(tab === t.id ? styles.activeNav : {})
+              background: 'none',
+              border: 'none',
+              padding: '15px 30px',
+              cursor: 'pointer',
+              fontSize: '16px',
+              borderBottom: tab === idx ? '3px solid #1976d2' : '3px solid transparent',
+              color: tab === idx ? '#1976d2' : 'inherit'
             }}
-            onClick={() => setTab(t.id)}
+            onClick={() => setTab(idx)}
           >
-            {t.label}
+            {label}
           </button>
         ))}
       </div>
 
-      <div style={styles.container}>
+      <div style={{maxWidth: '1200px', margin: '20px auto', padding: '0 20px'}}>
         {tab === 0 && (
-          <div style={styles.card}>
+          <div style={{background: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
             <h2>Upload NAA Records</h2>
             <p>Drag and drop NAA CRM screenshots or CSV files</p>
             <div style={{
@@ -93,14 +51,14 @@ function App() {
         {tab === 1 && (
           <div>
             <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px'}}>
-              <div style={styles.card}>
+              <div style={{background: 'white', borderRadius: '8px', padding: '20px', textAlign: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
                 <h3>Book Relevance Score</h3>
                 <div style={{fontSize: '3em', color: '#4caf50'}}>78</div>
                 <div style={{width: '100%', height: '20px', background: '#e0e0e0', borderRadius: '10px'}}>
                   <div style={{width: '78%', height: '100%', background: '#4caf50', borderRadius: '10px'}}></div>
                 </div>
               </div>
-              <div style={styles.card}>
+              <div style={{background: 'white', borderRadius: '8px', padding: '20px', textAlign: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
                 <h3>Agent Effectiveness Score</h3>
                 <div style={{fontSize: '3em', color: '#ff9800'}}>85</div>
                 <div style={{width: '100%', height: '20px', background: '#e0e0e0', borderRadius: '10px'}}>
@@ -108,7 +66,7 @@ function App() {
                 </div>
               </div>
             </div>
-            <div style={styles.card}>
+            <div style={{background: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
               <h3>Performance Metrics</h3>
               <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '15px'}}>
                 <div style={{textAlign: 'center'}}>
@@ -133,7 +91,7 @@ function App() {
         )}
 
         {tab === 2 && (
-          <div style={styles.card}>
+          <div style={{background: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
             <h2>Book Analytics</h2>
             <table style={{width: '100%', borderCollapse: 'collapse'}}>
               <thead>
@@ -166,7 +124,7 @@ function App() {
         )}
 
         {tab === 3 && (
-          <div style={styles.card}>
+          <div style={{background: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
             <h2>Promotion Tracker</h2>
             <div style={{marginBottom: '15px', padding: '15px', background: '#e8f5e9', borderRadius: '8px'}}>
               <div style={{fontWeight: 'bold'}}>✓ Associate Agent</div>
