@@ -1,10 +1,18 @@
-from fastapi import FastAPI
-app = FastAPI()
+import http.server
+import socketserver
+import os
+import json
 
-@app.get("/health")
-def health():
-    return {"status": "ok", "service": "baldwin-prospectiq-enrichment"}
+PORT = int(os.environ.get('PORT', 10000))
 
-@app.get("/")
-def root():
-    return {"message": "Baldwin-ProspectIQ Enrichment", "version": "1.0.0"}
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+        response = {'status': 'ok', 'service': 'baldwin-prospectiq-enrichment'}
+        self.wfile.write(json.dumps(response).encode())
+
+with socketserver.TCPServer(("0.0.0.0", PORT), Handler) as httpd:
+    print(f"Enrichment server running on port {PORT}")
+    httpd.serve_forever()
