@@ -10,3 +10,17 @@ services:
     healthcheck:
       path: /health
       port: 3000
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80
+  enrichment:
+    build:
+      context: .
+      dockerfile: Dockerfile.enrichment
+    ports:
+      - 8000
+    env:
+      PORT: 8000
