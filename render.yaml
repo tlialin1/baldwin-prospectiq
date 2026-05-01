@@ -21,5 +21,5 @@ services:
 
   - type: static
     name: baldwin-frontend
-    buildCommand: "echo 'Build complete'"
-    staticPublishPath: ./frontend
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: .
