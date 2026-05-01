@@ -1,5 +1,6 @@
 FROM node:18-alpine
 WORKDIR /app
 COPY backend/server.js ./
+ENV PORT=3000
 EXPOSE 3000
 CMD ["node", "server.js"]

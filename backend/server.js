@@ -6,6 +6,7 @@ const server = http.createServer((req, res) => {
   res.end(JSON.stringify({ 
     status: 'ok', 
     service: 'baldwin-prospectiq-backend',
+    port: PORT,
     time: new Date().toISOString()
   }));
 });

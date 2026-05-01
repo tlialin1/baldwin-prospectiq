@@ -6,11 +6,7 @@ services:
     ports:
       - 3000
     env:
-      NODE_ENV: production
       PORT: 3000
-    healthcheck:
-      path: /health
-      port: 3000
 
   enrichment:
     build:
