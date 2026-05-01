@@ -6,408 +6,868 @@
     <title>Baldwin Dashboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
+        body { 
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; 
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        
+        /* Layout */
+        .app {
+            display: flex;
             min-height: 100vh;
         }
-        .header {
-            background: #1976d2;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .header h1 { font-size: 2em; margin-bottom: 5px; }
-        .nav {
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #1e293b;
+            border-right: 1px solid #334155;
             display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+        }
+        .sidebar-logo {
+            padding: 24px;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #3b82f6;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            background: white;
-            border-bottom: 1px solid #ddd;
-            padding: 0;
+            font-size: 20px;
         }
-        .nav button {
-            background: none;
-            border: none;
-            padding: 15px 30px;
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            margin-bottom: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
+            color: #94a3b8;
+            font-size: 14px;
+            transition: all 0.2s;
         }
-        .nav button:hover, .nav button.active {
-            border-bottom-color: #1976d2;
-            color: #1976d2;
+        .nav-item:hover {
+            background: #334155;
+            color: #e2e8f0;
         }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
+        .nav-item.active {
+            background: #3b82f6;
+            color: #fff;
         }
-        .card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .card h2 {
-            color: #1976d2;
-            margin-bottom: 15px;
-        }
-        .score-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .score-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .score-value {
-            font-size: 3em;
-            font-weight: bold;
-            color: #1976d2;
-        }
-        .score-label {
-            color: #666;
-            margin-top: 10px;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #1976d2, #2196f3);
-            border-radius: 10px;
-            transition: width 0.3s;
-        }
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        .metric {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
+        .nav-icon {
+            font-size: 18px;
+            width: 24px;
             text-align: center;
         }
-        .metric-value {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #1976d2;
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid #334155;
         }
-        .metric-label {
-            color: #666;
-            font-size: 0.9em;
-            margin-top: 5px;
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .upload-area {
-            border: 2px dashed #1976d2;
-            border-radius: 8px;
-            padding: 40px;
-            text-align: center;
-            background: #f8f9ff;
-            cursor: pointer;
-            transition: all 0.3s;
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
         }
-        .upload-area:hover {
-            background: #e3f2fd;
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .user-role {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        
+        /* Main Content */
+        .main {
+            flex: 1;
+            margin-left: 260px;
+            padding: 32px;
+            max-width: calc(100% - 260px);
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .header-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+        .header-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .header-actions {
+            display: flex;
+            gap: 12px;
         }
         .btn {
-            background: #1976d2;
-            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
             border: none;
-            padding: 12px 24px;
-            border-radius: 4px;
+            font-size: 14px;
             cursor: pointer;
-            font-size: 16px;
-            margin: 5px;
+            font-weight: 500;
+            transition: all 0.2s;
         }
-        .btn:hover {
-            background: #1565c0;
+        .btn-primary {
+            background: #3b82f6;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        .btn-secondary {
+            background: #334155;
+            color: #e2e8f0;
+        }
+        .btn-secondary:hover {
+            background: #475569;
+        }
+        
+        /* Score Cards */
+        .scores-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .score-card {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #334155;
+        }
+        .score-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .score-title {
+            font-size: 14px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        .score-menu {
+            color: #64748b;
+            cursor: pointer;
+        }
+        
+        /* Circular Gauge */
+        .gauge-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .gauge {
+            width: 140px;
+            height: 140px;
+            position: relative;
+        }
+        .gauge-bg {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 180deg,
+                #ef4444 0deg 60deg,
+                #f59e0b 60deg 120deg,
+                #10b981 120deg 180deg,
+                transparent 180deg 360deg
+            );
+            mask: radial-gradient(transparent 55%, black 56%);
+            -webkit-mask: radial-gradient(transparent 55%, black 56%);
+        }
+        .gauge-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            font-size: 36px;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+        .gauge-label {
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        
+        /* Score Footer */
+        .score-footer {
+            text-align: center;
+        }
+        .score-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .trend-up {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        .trend-down {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        .metric-card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #334155;
+        }
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .metric-title {
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        .metric-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .icon-blue { background: rgba(59, 130, 246, 0.1); }
+        .icon-green { background: rgba(16, 185, 129, 0.1); }
+        .icon-purple { background: rgba(139, 92, 246, 0.1); }
+        .icon-orange { background: rgba(245, 158, 11, 0.1); }
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 4px;
+        }
+        .metric-change {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .change-up { color: #10b981; }
+        .change-down { color: #ef4444; }
+        
+        /* Section */
+        .section {
+            margin-bottom: 32px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f8fafc;
+        }
+        
+        /* Table */
+        .table-container {
+            background: #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #334155;
         }
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
         th {
-            background: #f5f5f5;
+            background: #0f172a;
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 12px;
+            color: #94a3b8;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #334155;
+            font-size: 14px;
+        }
+        tr:hover {
+            background: #252f47;
+        }
+        .client-name {
+            font-weight: 600;
+            color: #f8fafc;
+        }
+        .client-email {
+            font-size: 12px;
+            color: #94a3b8;
         }
         .status-badge {
-            padding: 4px 12px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        .status-inactive {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        .action-btn {
+            background: transparent;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .action-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+        
+        /* Promotion Cards */
+        .promo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .promo-card {
+            background: #1e293b;
             border-radius: 12px;
-            font-size: 0.85em;
+            padding: 24px;
+            border: 1px solid #334155;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .promo-card.completed {
+            border-color: #10b981;
+        }
+        .promo-card.current {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #1e293b 0%, #1e3a5f 100%);
+        }
+        .promo-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 20px;
+        }
+        .promo-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+        .promo-title {
+            font-size: 16px;
             font-weight: 600;
+            margin-bottom: 8px;
+            color: #f8fafc;
         }
-        .status-active { background: #e8f5e9; color: #2e7d32; }
-        .status-pending { background: #fff3e0; color: #ef6c00; }
-        .promotion-step {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            margin-bottom: 10px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .promo-desc {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 16px;
         }
-        .promotion-step.completed {
-            background: #e8f5e9;
+        .promo-progress {
+            width: 100%;
+            height: 6px;
+            background: #334155;
+            border-radius: 3px;
+            overflow: hidden;
         }
-        .promotion-step.current {
-            background: #e3f2fd;
-            border-left: 4px solid #1976d2;
+        .promo-progress-bar {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
         }
-        .step-number {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #1976d2;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 15px;
+        .progress-green { background: #10b981; }
+        .progress-blue { background: #3b82f6; }
+        .progress-gray { background: #64748b; }
+        
+        /* Upload */
+        .upload-area {
+            background: #1e293b;
+            border: 2px dashed #334155;
+            border-radius: 16px;
+            padding: 60px;
+            text-align: center;
+            transition: all 0.2s;
         }
-        .step-content {
-            flex: 1;
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: #252f47;
         }
-        .step-title {
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .upload-title {
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
-        .step-requirements {
-            font-size: 0.9em;
-            color: #666;
+        .upload-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 24px;
         }
-        .hidden { display: none; }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .scores-row { grid-template-columns: repeat(2, 1fr); }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+            .promo-grid { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🎯 Baldwin Dashboard</h1>
-        <p>Post-Sale Performance & Retention Platform</p>
-    </div>
-
-    <div class="nav">
-        <button class="active" onclick="showTab('upload')">📤 Upload</button>
-        <button onclick="showTab('dashboard')">📊 Dashboard</button>
-        <button onclick="showTab('analytics')">📈 Analytics</button>
-        <button onclick="showTab('promotion')">🏆 Promotion</button>
-    </div>
-
-    <div class="container">
-        <!-- Upload Tab -->
-        <div id="upload" class="tab-content">
-            <div class="card">
-                <h2>Upload NAA Records</h2>
-                <p style="margin-bottom: 20px; color: #666;">
-                    Drag and drop NAA CRM screenshots or CSV files to upload policy records.
-                </p>
-                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                    <div style="font-size: 3em; margin-bottom: 10px;">📄</div>
-                    <div style="font-size: 1.2em; color: #1976d2; margin-bottom: 10px;">
-                        Drop files here or click to browse
-                    </div>
-                    <div style="color: #888; font-size: 0.9em;">
-                        Supports: CSV, Excel, PNG, JPG (max 10MB)
-                    </div>
-                    <input type="file" id="fileInput" style="display: none;" accept=".csv,.xlsx,.xls,.png,.jpg,.jpeg">
+    <div class="app">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon">🎯</div>
+                <div class="logo-text">Baldwin</div>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-item active" onclick="showTab('dashboard', this)">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
                 </div>
-                <div style="margin-top: 20px; text-align: center;">
-                    <button class="btn" onclick="alert('Upload functionality coming soon')">Process Records</button>
+                <div class="nav-item" onclick="showTab('analytics', this)">
+                    <span class="nav-icon">📈</span>
+                    <span>Analytics</span>
+                </div>
+                <div class="nav-item" onclick="showTab('book', this)">
+                    <span class="nav-icon">📚</span>
+                    <span>Book</span>
+                </div>
+                <div class="nav-item" onclick="showTab('promotion', this)">
+                    <span class="nav-icon">🏆</span>
+                    <span>Promotions</span>
+                </div>
+                <div class="nav-item" onclick="showTab('upload', this)">
+                    <span class="nav-icon">📤</span>
+                    <span>Upload</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <div>
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Team Leader</div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- Dashboard Tab -->
-        <div id="dashboard" class="tab-content hidden">
-            <div class="score-grid">
-                <div class="score-card">
-                    <div class="score-value" style="color: #4caf50;">78</div>
-                    <div class="score-label">Book Relevance Score</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 78%;"></div>
+        
+        <!-- Main Content -->
+        <div class="main">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="header">
+                    <div>
+                        <div class="header-title">Dashboard</div>
+                        <div class="header-subtitle">Overview of your performance metrics</div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-secondary">Export Report</button>
+                        <button class="btn btn-primary">+ Add Policy</button>
                     </div>
                 </div>
-                <div class="score-card">
-                    <div class="score-value" style="color: #ff9800;">85</div>
-                    <div class="score-label">Agent Effectiveness Score</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 85%;"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>Performance Metrics</h2>
-                <div class="metrics-grid">
-                    <div class="metric">
-                        <div class="metric-value">147</div>
-                        <div class="metric-label">Total Policies</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">89</div>
-                        <div class="metric-label">Total Clients</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">$28,450</div>
-                        <div class="metric-label">Monthly Premium</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">$45,600</div>
-                        <div class="metric-label">YTD Commission</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>Promotion Progress</h2>
-                <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                    <span style="background: #1976d2; color: white; padding: 5px 15px; border-radius: 20px; margin-right: 15px;">Senior Agent</span>
-                    <div class="progress-bar" style="flex: 1;">
-                        <div class="progress-fill" style="width: 65%;"></div>
-                    </div>
-                    <span style="background: #9c27b0; color: white; padding: 5px 15px; border-radius: 20px; margin-left: 15px;">Team Leader</span>
-                </div>
-                <p style="color: #666;">65% complete toward Team Leader</p>
-            </div>
-        </div>
-
-        <!-- Analytics Tab -->
-        <div id="analytics" class="tab-content hidden">
-            <div class="card">
-                <h2>Book Analytics</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Client</th>
-                            <th>Policy #</th>
-                            <th>Carrier</th>
-                            <th>Premium</th>
-                            <th>Face Amount</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>John Smith</td>
-                            <td>POL-001</td>
-                            <td>Mutual of Omaha</td>
-                            <td>$250</td>
-                            <td>$500,000</td>
-                            <td><span class="status-badge status-active">Active</span></td>
-                        </tr>
-                        <tr>
-                            <td>Sarah Johnson</td>
-                            <td>POL-002</td>
-                            <td>AIG</td>
-                            <td>$180</td>
-                            <td>$350,000</td>
-                            <td><span class="status-badge status-active">Active</span></td>
-                        </tr>
-                        <tr>
-                            <td>Michael Brown</td>
-                            <td>POL-003</td>
-                            <td>Prudential</td>
-                            <td>$320</td>
-                            <td>$750,000</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Promotion Tab -->
-        <div id="promotion" class="tab-content hidden">
-            <div class="card">
-                <h2>Promotion Tracker</h2>
                 
-                <div class="promotion-step completed">
-                    <div class="step-number">✓</div>
-                    <div class="step-content">
-                        <div class="step-title">Associate Agent</div>
-                        <div class="step-requirements">Completed all requirements</div>
+                <!-- Score Cards -->
+                <div class="scores-row">
+                    <div class="score-card">
+                        <div class="score-header">
+                            <span class="score-title">Book Relevance Score</span>
+                            <span class="score-menu">⋯</span>
+                        </div>
+                        <div class="gauge-container">
+                            <div class="gauge">
+                                <div class="gauge-bg"></div>
+                                <div class="gauge-value">78</div>
+                                <div class="gauge-label">out of 100</div>
+                            </div>
+                        </div>
+                        <div class="score-footer">
+                            <span class="score-trend trend-up">↑ 5.2% from last month</span>
+                        </div>
                     </div>
-                </div>
-
-                <div class="promotion-step completed">
-                    <div class="step-number">✓</div>
-                    <div class="step-content">
-                        <div class="step-title">Senior Agent</div>
-                        <div class="step-requirements">Completed all requirements</div>
+                    
+                    <div class="score-card">
+                        <div class="score-header">
+                            <span class="score-title">Agent Effectiveness</span>
+                            <span class="score-menu">⋯</span>
+                        </div>
+                        <div class="gauge-container">
+                            <div class="gauge">
+                                <div class="gauge-bg"></div>
+                                <div class="gauge-value">85</div>
+                                <div class="gauge-label">out of 100</div>
+                            </div>
+                        </div>
+                        <div class="score-footer">
+                            <span class="score-trend trend-up">↑ 2.1% from last month</span>
+                        </div>
                     </div>
-                </div>
-
-                <div class="promotion-step current">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <div class="step-title">Team Leader (Current)</div>
-                        <div class="step-requirements">
-                            • Recruit 3 new agents (1/3)<br>
-                            • Achieve Book Relevance Score of 80+ (78/100)<br>
-                            • Maintain 100+ active policies (147/100) ✓<br>
-                            • Complete leadership training (Pending)
+                    
+                    <div class="score-card">
+                        <div class="score-header">
+                            <span class="score-title">Retention Score</span>
+                            <span class="score-menu">⋯</span>
+                        </div>
+                        <div class="gauge-container">
+                            <div class="gauge">
+                                <div class="gauge-bg"></div>
+                                <div class="gauge-value">72</div>
+                                <div class="gauge-label">out of 100</div>
+                            </div>
+                        </div>
+                        <div class="score-footer">
+                            <span class="score-trend trend-up">↑ 8.4% from last month</span>
                         </div>
                     </div>
                 </div>
-
-                <div class="promotion-step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <div class="step-title">Agency Manager</div>
-                        <div class="step-requirements">
-                            • Build team of 10+ agents<br>
-                            • Achieve combined book premium of $50K/month<br>
-                            • Maintain personal Book Relevance Score of 85+
+                
+                <!-- Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Total Policies</span>
+                            <div class="metric-icon icon-blue">📋</div>
+                        </div>
+                        <div class="metric-value">147</div>
+                        <div class="metric-change change-up">↑ 12 from last month</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Total Clients</span>
+                            <div class="metric-icon icon-green">👥</div>
+                        </div>
+                        <div class="metric-value">89</div>
+                        <div class="metric-change change-up">↑ 5 from last month</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">Monthly Premium</span>
+                            <div class="metric-icon icon-purple">💰</div>
+                        </div>
+                        <div class="metric-value">$28.4K</div>
+                        <div class="metric-change change-up">↑ $2.1K from last month</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-title">YTD Commission</span>
+                            <div class="metric-icon icon-orange">💵</div>
+                        </div>
+                        <div class="metric-value">$45.6K</div>
+                        <div class="metric-change change-up">↑ $8.2K from last year</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Analytics Tab -->
+            <div id="analytics" class="tab-content">
+                <div class="header">
+                    <div>
+                        <div class="header-title">Analytics</div>
+                        <div class="header-subtitle">Detailed performance analytics</div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">Performance Trends</div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>This Month</th>
+                                    <th>Last Month</th>
+                                    <th>Change</th>
+                                    <th>Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="client-name">New Policies</span></td>
+                                    <td>12</td>
+                                    <td>8</td>
+                                    <td class="change-up">+50%</td>
+                                    <td>📈</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="client-name">Client Retention</span></td>
+                                    <td>94%</td>
+                                    <td>91%</td>
+                                    <td class="change-up">+3.3%</td>
+                                    <td>📈</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="client-name">Avg Premium</span></td>
+                                    <td>$285</td>
+                                    <td>$272</td>
+                                    <td class="change-up">+4.8%</td>
+                                    <td>📈</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Book Tab -->
+            <div id="book" class="tab-content">
+                <div class="header">
+                    <div>
+                        <div class="header-title">Book of Business</div>
+                        <div class="header-subtitle">Manage your client policies</div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary">+ Add Client</button>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">Recent Policies</div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Policy #</th>
+                                    <th>Carrier</th>
+                                    <th>Premium</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="client-name">John Smith</div>
+                                        <div class="client-email">john@email.com</div>
+                                    </td>
+                                    <td>POL-001</td>
+                                    <td>Mutual of Omaha</td>
+                                    <td>$250/mo</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td><button class="action-btn">View Details</button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="client-name">Sarah Johnson</div>
+                                        <div class="client-email">sarah@email.com</div>
+                                    </td>
+                                    <td>POL-002</td>
+                                    <td>AIG</td>
+                                    <td>$180/mo</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td><button class="action-btn">View Details</button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="client-name">Michael Chen</div>
+                                        <div class="client-email">michael@email.com</div>
+                                    </td>
+                                    <td>POL-003</td>
+                                    <td>State Farm</td>
+                                    <td>$320/mo</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td><button class="action-btn">View Details</button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="client-name">Emily Davis</div>
+                                        <div class="client-email">emily@email.com</div>
+                                    </td>
+                                    <td>POL-004</td>
+                                    <td>Prudential</td>
+                                    <td>$195/mo</td>
+                                    <td><span class="status-badge status-active">Active</span></td>
+                                    <td><button class="action-btn">View Details</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Promotion Tab -->
+            <div id="promotion" class="tab-content">
+                <div class="header">
+                    <div>
+                        <div class="header-title">Promotion Tracker</div>
+                        <div class="header-subtitle">Your career progression</div>
+                    </div>
+                </div>
+                
+                <div class="promo-grid">
+                    <div class="promo-card completed">
+                        <div class="promo-status">✓</div>
+                        <div class="promo-icon">🌟</div>
+                        <div class="promo-title">Associate Agent</div>
+                        <div class="promo-desc">Entry level position completed</div>
+                        <div class="promo-progress">
+                            <div class="promo-progress-bar progress-green" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="promo-card completed">
+                        <div class="promo-status">✓</div>
+                        <div class="promo-icon">⭐</div>
+                        <div class="promo-title">Senior Agent</div>
+                        <div class="promo-desc">Experienced producer completed</div>
+                        <div class="promo-progress">
+                            <div class="promo-progress-bar progress-green" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="promo-card current">
+                        <div class="promo-status">●</div>
+                        <div class="promo-icon">🚀</div>
+                        <div class="promo-title">Team Leader</div>
+                        <div class="promo-desc">Current position - 65% complete</div>
+                        <div class="promo-progress">
+                            <div class="promo-progress-bar progress-blue" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="promo-card">
+                        <div class="promo-status">🔒</div>
+                        <div class="promo-icon">👑</div>
+                        <div class="promo-title">Agency Manager</div>
+                        <div class="promo-desc">Next milestone to unlock</div>
+                        <div class="promo-progress">
+                            <div class="promo-progress-bar progress-gray" style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- Upload Tab -->
+            <div id="upload" class="tab-content">
+                <div class="header">
+                    <div>
+                        <div class="header-title">Upload Records</div>
+                        <div class="header-subtitle">Import NAA CRM data</div>
+                    </div>
+                </div>
+                
+                <div class="upload-area">
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-title">Drag and drop your files here</div>
+                    <div class="upload-subtitle">or click to browse from your computer</div>
+                    <button class="btn btn-primary">Choose Files</button>
+                </div>
+            </div>
         </div>
     </div>
-
+    
     <script>
-        function showTab(tabName) {
+        function showTab(tabName, element) {
             // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.add('hidden');
+                tab.classList.remove('active');
             });
             
             // Show selected tab
-            document.getElementById(tabName).classList.remove('hidden');
+            document.getElementById(tabName).classList.add('active');
             
-            // Update nav buttons
-            document.querySelectorAll('.nav button').forEach(btn => {
-                btn.classList.remove('active');
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
             });
-            event.target.classList.add('active');
+            element.classList.add('active');
         }
-
-        // File upload handler
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                alert('Selected file: ' + file.name + '\nSize: ' + (file.size / 1024).toFixed(2) + ' KB');
-            }
-        });
     </script>
 </body>
 </html>
