@@ -3,7 +3,7 @@ services:
     name: baldwin-backend
     runtime: python
     plan: free
-    buildCommand: ""
+    buildCommand: "echo 'Build complete'"
     startCommand: python backend/server.py
     envVars:
       - key: PORT
