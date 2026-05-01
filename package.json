@@ -1,0 +1,48 @@
+{
+  "name": "baldwin-leads-module",
+  "version": "1.0.0",
+  "description": "Lead Scoring & Enrichment Module for Baldwin Insurance Dashboard",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../enrichment-service && pip install -r requirements.txt",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:enrichment\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:enrichment": "cd enrichment-service && python main.py",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:enrichment\"",
+    "start:backend": "cd backend && npm start",
+    "start:enrichment": "cd enrichment-service && uvicorn main:app --host 0.0.0.0 --port 8000",
+    "build": "cd frontend && npm install && npm run build",
+    "test": "npm run test:backend && npm run test:enrichment",
+    "test:backend": "cd backend && npm test",
+    "test:enrichment": "cd enrichment-service && python -m pytest ../tests/ -v",
+    "test:scoring": "cd enrichment-service && python -m pytest ../tests/test_scoring_algorithm.py -v",
+    "migrate": "cd backend && npm run migrate",
+    "lint": "cd backend && npm run lint && cd ../frontend && npm run lint",
+    "setup": "npm run install:all && npm run migrate"
+  },
+  "keywords": [
+    "insurance",
+    "leads",
+    "scoring",
+    "enrichment",
+    "baldwin"
+  ],
+  "author": "Baldwin Insurance",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/baldwin-leads-module.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/baldwin-leads-module/issues"
+  },
+  "homepage": "https://github.com/your-org/baldwin-leads-module#readme"
+}

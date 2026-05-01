@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: baldwin_leads
+      POSTGRES_USER: baldwin
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U baldwin -d baldwin_leads"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    environment:
+      NODE_ENV: production
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: baldwin_leads
+      DB_USER: baldwin
+      DB_PASSWORD: ${DB_PASSWORD}
+      ENRICHMENT_SERVICE_URL: http://enrichment:8000
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  enrichment:
+    build:
+      context: .
+      dockerfile: Dockerfile.enrichment
+    environment:
+      DATABASE_URL: postgresql://baldwin:${DB_PASSWORD}@postgres:5432/baldwin_leads
+      ZILLOW_API_KEY: ${ZILLOW_API_KEY}
+      DATA_AXLE_API_KEY: ${DATA_AXLE_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
