@@ -22,8 +22,6 @@ services:
       PORT: 8000
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: nginx:alpine
     ports:
       - 80
