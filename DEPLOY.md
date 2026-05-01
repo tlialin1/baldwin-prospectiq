@@ -1,3 +1,3 @@
-# Deployment Trigger
-Last deploy: 2026-05-01 00:27 PDT
-Commit: abfa5df
+# Deployment Status
+Last commit: 840a230
+Status: Checking Railway deployment
