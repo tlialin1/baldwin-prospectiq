@@ -1,11 +1,10 @@
 FROM nginx:alpine
 
-# Copy only static files to the web root
+# Copy static files
 COPY index.html /usr/share/nginx/html/index.html
 
-# Copy nginx config template
-COPY nginx.conf.template /etc/nginx/templates/default.conf.template
+# Create nginx config that listens on Railway's expected port
+RUN echo 'server { listen ${PORT}; server_name _; root /usr/share/nginx/html; index index.html; location / { try_files $uri $uri/ /index.html; } }' > /etc/nginx/conf.d/default.conf
 
-ENV PORT=3000
-
-CMD ["nginx", "-g", "daemon off;"]
+# Use shell to substitute PORT env var
+CMD sh -c 'sed -i "s/\${PORT}/$PORT/g" /etc/nginx/conf.d/default.conf && nginx -g "daemon off;"'
