@@ -1,5 +1,5 @@
-FROM python:3.9-slim
+FROM python:3.9
 WORKDIR /app
 COPY backend/server.py ./
 EXPOSE 3000
-CMD ["python", "server.py"]
+CMD ["python3", "server.py"]
