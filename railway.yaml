@@ -20,3 +20,10 @@ services:
       - 8000
     env:
       PORT: 8000
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80
