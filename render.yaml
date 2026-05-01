@@ -19,12 +19,7 @@ services:
       - key: PORT
         value: 10000
 
-  - type: web
+  - type: static
     name: baldwin-frontend
-    runtime: node
-    plan: free
-    buildCommand: "npm install"
-    startCommand: "npx serve ."
-    envVars:
-      - key: PORT
-        value: 10000
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: build
