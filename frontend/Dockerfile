@@ -6,9 +6,9 @@ COPY index.html /usr/share/nginx/html/index.html
 # Copy nginx config template
 COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 
-# Railway injects PORT at runtime. Default to 3000 if not set.
+# Railway injects PORT at runtime. Default to 8080 if not set.
 # nginx:alpine's entrypoint runs envsubst on /etc/nginx/templates/*.template,
 # substituting ${PORT} in nginx.conf.template before nginx starts.
-ENV PORT=3000
+ENV PORT=8080
 
 CMD ["nginx", "-g", "daemon off;"]
