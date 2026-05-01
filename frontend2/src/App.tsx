@@ -2,10 +2,6 @@ import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, AppBar, Toolbar, Typography, Container, Tabs, Tab } from '@mui/material';
-import UploadRecords from './components/UploadRecords';
-import AgentDashboard from './components/AgentDashboard';
-import BookAnalytics from './components/BookAnalytics';
-import PromotionTracker from './components/PromotionTracker';
 
 const theme = createTheme({
   palette: {
@@ -35,10 +31,10 @@ function App() {
             <Tab label="📈 Analytics" />
             <Tab label="🏆 Promotion" />
           </Tabs>
-          {tab === 0 && <UploadRecords />}
-          {tab === 1 && <AgentDashboard />}
-          {tab === 2 && <BookAnalytics />}
-          {tab === 3 && <PromotionTracker />}
+          {tab === 0 && <div>Upload Component</div>}
+          {tab === 1 && <div>Dashboard Component</div>}
+          {tab === 2 && <div>Analytics Component</div>}
+          {tab === 3 && <div>Promotion Component</div>}
         </Container>
       </Box>
     </ThemeProvider>
