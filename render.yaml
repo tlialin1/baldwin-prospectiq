@@ -8,3 +8,18 @@ services:
     envVars:
       - key: PORT
         value: 10000
+
+  - type: web
+    name: baldwin-enrichment
+    runtime: python
+    plan: free
+    buildCommand: "echo 'Build complete'"
+    startCommand: python enrichment-service/main.py
+    envVars:
+      - key: PORT
+        value: 10000
+
+  - type: static
+    name: baldwin-frontend
+    buildCommand: "echo 'Build complete'"
+    staticPublishPath: ./frontend
