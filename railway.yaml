@@ -1,7 +1,13 @@
 services:
   backend:
-    image: python:3.9-slim
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
     ports:
       - 3000
     env:
       PORT: 3000
+    watch:
+      - backend/
+      - Dockerfile.backend
+      - railway.yaml
