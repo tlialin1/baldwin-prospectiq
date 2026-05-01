@@ -1,5 +1,6 @@
 FROM node:18-alpine
 WORKDIR /app
+COPY backend/package.json ./
 COPY backend/server.js ./
 EXPOSE 3000
 CMD ["node", "server.js"]
